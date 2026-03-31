@@ -1,21 +1,3 @@
-Ctrl+K
-Ctrl+J
-create a python script do copy a table from oracle to mysql every one minute only new datas table name and format create table hr_rawdata_inter
-(
-  empcode char(8) not null -- Device id(Employee Regno)
-, punchtime datetime not null -- Punch date and time
-, machineip char(20) not null -- Punching Device IP
-, inoutmode char(1) not null -- 'I' - IN 'O' - OUT
-, status char(1) not null -- defalut 'P'
-, deviceid char(8) not null -- device id(Employee Regno)
-, constraint hr_rawdata_inter_pk primary key ( empcode, punchtime )
-)
-
-Here's a complete Python script that copies only new records from an Oracle table to a MySQL table every minute.
-
-It uses the table structure you provided: hr_rawdata_inter.
-
-Python Script: oracle_to_mysql_sync.py
 import cx_Oracle
 import pymysql
 import time
@@ -396,24 +378,3 @@ if __name__ == "__main__":
         
         logging.info("Waiting 60 seconds for next sync...")
         time.sleep(60)
-Important Installation Steps:
-Run these commands before executing the script:
-
-pip install cx_Oracle pyodbc
-For Windows, you also need to install ODBC Driver 17 for SQL Server:
-
-Download from Microsoft: https://aka.ms/downloadmsodbcsql17
-Configuration Tips:
-For Windows Authentication, leave MSSQL_USER and MSSQL_PASSWORD as None or empty.
-Make sure the MSSQL user has INSERT permission on the table.
-Update all credential and server details in the CONFIGURATION section.
-Would you like me to also provide a version using SQLAlchemy (recommended for larger projects)?
-
-Let me know if you face any connection issues!
-
-1.1s
-
-
-
-Upgrade to SuperGrok
-Oracle to MySQL Incremental Sync Script - Grok
