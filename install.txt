@@ -41,3 +41,33 @@ import pyodbc
 conn = pyodbc.connect("DRIVER={ODBC Driver 18 for SQL Server};SERVER=your_server;DATABASE=your_db;UID=your_user;PWD=your_pass;TrustServerCertificate=yes;")
 print("Connection successful!")
 conn.close()
+
+
+# 1. Create directory
+sudo mkdir -p /opt/oracle
+cd /opt/oracle
+
+# 2. Download the latest Basic Instant Client (64-bit)
+sudo wget https://download.oracle.com/otn_software/linux/instantclient/instantclient-basic-linuxx64.zip
+
+# 3. Unzip it
+sudo unzip instantclient-basic-linuxx64.zip
+
+# 4. Install required dependency
+sudo apt update
+sudo apt install -y libaio1
+
+# 5. Create config for library path
+sudo sh -c "echo /opt/oracle/instantclient_* > /etc/ld.so.conf.d/oracle-instantclient.conf"
+sudo ldconfig
+
+# 6. (Optional but recommended) Also add to your current session
+export LD_LIBRARY_PATH=/opt/oracle/instantclient_*/${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
+
+
+ldconfig -p | grep libclntsh
+
+import os
+os.environ["LD_LIBRARY_PATH"] = "/opt/oracle/instantclient_" + \
+    [d for d in os.listdir("/opt/oracle") if d.startswith("instantclient_")][0] + \
+    ":" + os.environ.get("LD_LIBRARY_PATH", "")
