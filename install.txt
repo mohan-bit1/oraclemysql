@@ -1,0 +1,12 @@
+sudo apt update
+sudo apt install -y unixodbc unixodbc-dev libodbc2 curl gnupg
+
+# Microsoft ODBC Driver
+curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+curl https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
+sudo apt update
+sudo ACCEPT_EULA=Y apt install -y msodbcsql18
+
+# Reinstall pyodbc
+pip uninstall pyodbc -y
+pip install pyodbc
