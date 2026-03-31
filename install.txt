@@ -10,3 +10,34 @@ sudo ACCEPT_EULA=Y apt install -y msodbcsql18
 # Reinstall pyodbc
 pip uninstall pyodbc -y
 pip install pyodbc
+
+
+def get_mssql_connection():
+    if MSSQL_USER and MSSQL_PASSWORD:
+        # SQL Authentication
+        conn_str = (
+            "DRIVER={ODBC Driver 18 for SQL Server};"
+            f"SERVER={MSSQL_SERVER};"
+            f"DATABASE={MSSQL_DATABASE};"
+            f"UID={MSSQL_USER};"
+            f"PWD={MSSQL_PASSWORD};"
+            "TrustServerCertificate=yes;"   # Add this if using self-signed or dev cert
+        )
+    else:
+        # Windows Authentication (if applicable)
+        conn_str = (
+            "DRIVER={ODBC Driver 18 for SQL Server};"
+            f"SERVER={MSSQL_SERVER};"
+            f"DATABASE={MSSQL_DATABASE};"
+            "Trusted_Connection=yes;"
+            "TrustServerCertificate=yes;"
+        )
+    
+    return pyodbc.connect(conn_str)
+
+
+import pyodbc
+
+conn = pyodbc.connect("DRIVER={ODBC Driver 18 for SQL Server};SERVER=your_server;DATABASE=your_db;UID=your_user;PWD=your_pass;TrustServerCertificate=yes;")
+print("Connection successful!")
+conn.close()
