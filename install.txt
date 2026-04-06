@@ -71,3 +71,13 @@ import os
 os.environ["LD_LIBRARY_PATH"] = "/opt/oracle/instantclient_" + \
     [d for d in os.listdir("/opt/oracle") if d.startswith("instantclient_")][0] + \
     ":" + os.environ.get("LD_LIBRARY_PATH", "")
+
+
+
+
+
+def get_oracle_connection():
+    conn = cx_Oracle.connect(user=ORACLE_USER, password=ORACLE_PASSWORD, dsn=ORACLE_DSN)
+    # Optional: Set session NLS parameters
+    conn.cursor().execute("ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD HH24:MI:SS'")
+    return conn
